@@ -1,0 +1,3 @@
+/home/megumi/c_code/POXIS/fork/build/CMakeFiles/fork.dir
+/home/megumi/c_code/POXIS/fork/build/CMakeFiles/edit_cache.dir
+/home/megumi/c_code/POXIS/fork/build/CMakeFiles/rebuild_cache.dir
