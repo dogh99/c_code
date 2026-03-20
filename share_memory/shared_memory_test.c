@@ -12,6 +12,7 @@ int main(int argc, char const *argv[])
     //创建一个共享内存对象
     char shm_name[100] ={0};
     sprintf(shm_name,"/lettrt%d",getpid()); 
+    
     //前一个参数是文件打开标志,后一个参数是文件访问权限
     int fd = shm_open(shm_name,O_RDWR | O_CREAT,0644);
     if(fd < 0){

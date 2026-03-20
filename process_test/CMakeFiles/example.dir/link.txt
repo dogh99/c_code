@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/example.dir/system_process.c.o -o example 

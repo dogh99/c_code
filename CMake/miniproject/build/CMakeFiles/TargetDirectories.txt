@@ -1,0 +1,3 @@
+/home/megumi/c_code/CMake/miniproject/build/CMakeFiles/miniproject.dir
+/home/megumi/c_code/CMake/miniproject/build/CMakeFiles/edit_cache.dir
+/home/megumi/c_code/CMake/miniproject/build/CMakeFiles/rebuild_cache.dir
