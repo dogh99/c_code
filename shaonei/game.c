@@ -1,5 +1,6 @@
 #include "game.h"
 #include <stdio.h>
+#include <stdlib.h>   // 提供 rand() 和 srand()
 
 void Menu()
 {
@@ -77,18 +78,22 @@ void StarGame()
     display(data_show,Row,Col);
 
     SetMine(data,Row,Col);
+    display(data,Row,Col);
+
+    FindMine(data_show,data,Row,Col);
+
 }
 
-void SetMine(char array[Row][Col], int row, int col)
+void SetMine(char array[Row_s][Col_s], int row, int col)
 {
     int x,y;
     for (int i = 0; i < COUNT; i++)
     {
-        x = rand() % Row;
-        y = rand() % Col;
-        if (array[x+1][y+1] = '0')
+        x = rand() % row + 1; //配合rand()1到9不会将雷放到边缘地带
+        y = rand() % col + 1;
+        if (array[x][y] == '0')
         {
-            array[x+1][y+1] = '1';
+            array[x][y] = '1';
         }
         else
         {
@@ -97,4 +102,83 @@ void SetMine(char array[Row][Col], int row, int col)
         
     }
     
+}
+
+void FindMine(char show[Row_s][Col_s], char data[Row_s][Col_s],int row, int col)
+{
+    //用户输入扫雷位置,并进行判断
+    int x,y;
+    while (1)
+    {
+        printf("请输入你想扫雷的位置:\n");
+        scanf("%d,%d",&x,&y);
+        if (x >= 1 && x <= row && y >= 1 && y <= col)
+        {
+            if (data[x][y] == '1')
+            {
+            printf("你掉进陷阱了!!!\n");
+            display(data,row,col);
+            break;
+            }
+            else
+            {
+                //递归探索
+                recurveSearch(show,data,Row,Col,x,y);
+                //显示数据
+                display(show,Row,Col);
+                //判断是否胜利
+
+            }
+
+        }
+        else
+        {
+            printf("你输入的数据非法!重新输入!\n");
+        }   
+    }
+    printf("666\n"); 
+}
+
+int GetMineNum(char data[Row_s][Col_s],int x, int y)
+//函数输入为当前查找格子的坐标
+{
+     int num = 0;
+                //获取当前格子周围地雷的数量
+    for ( int i = x-1; i <= x+1 ; i++)
+    {
+        for (int j = y-1; j <= y+1; j++)
+            {
+                if (data[i][j] == '1')
+                {
+                    num++;
+                }
+            }
+    }
+    return num;
+}
+
+void recurveSearch(char show[Row_s][Col_s], char data[Row_s][Col_s],int row, int col,int x,int y)
+{
+//递归结束的条件,1遇到了空白格 2当前格子的外围有地雷
+if (x >= 1 && x <= row && y >= 1 && y <= col)
+{
+    if (show[x][y] == ' ')
+    {
+        return;
+    }
+    if (GetMineNum(data, x,y))
+    {
+        show[x][y] = GetMineNum(data, x,y) + '0';
+        return;
+    }
+    show[x][y] = ' ';
+    recurveSearch(show,data,row,col,x-1,y-1); // 左上
+    recurveSearch(show,data,row,col,x,y-1);   // 左
+    recurveSearch(show,data,row,col,x+1,y-1); // 左下
+    recurveSearch(show,data,row,col,x-1,y);   // 上
+    recurveSearch(show,data,row,col,x+1,y);   // 下
+    recurveSearch(show,data,row,col,x-1,y+1); // 右上
+    recurveSearch(show,data,row,col,x,y+1);   // 右 
+    recurveSearch(show,data,row,col,x+1,y+1); // 右下
+}
 }

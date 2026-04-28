@@ -13,5 +13,11 @@ void StarGame();
 
 void init(char array[Row_s][Col_s],int row, int col, char c);
 
-void SetMine(char array[Row][Col], int row, int col);
+void SetMine(char array[Row_s][Col_s], int row, int col);
+
+void FindMine(char show[Row_s][Col_s], char data[Row_s][Col_s],int row, int col);
+
+int GetMineNum(char data[Row_s][Col_s],int x, int y);
+
+void recurveSearch(char show[Row_s][Col_s], char data[Row_s][Col_s],int row, int col,int x,int y);
 
