@@ -81,7 +81,7 @@ int main(int argc, char const *argv[])
     memset(&server_addr,0,sizeof(server_addr));
     memset(&client_addr,0,sizeof(client_addr));
 
-    //客户端一般又内核自己分配不需要bind()
+    //客户端一般由内核自己分配不需要bind()
     // //填写客户端地址
     // client_addr.sin_family = AF_INET;
     // inet_pton(AF_INET,"192.168.1.133",&client_addr.sin_addr);
@@ -91,8 +91,8 @@ int main(int argc, char const *argv[])
     //填写服务端地址
     server_addr.sin_family = AF_INET;
     //server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    inet_pton(AF_INET,"127.0.0.1",&server_addr.sin_addr);
-    server_addr.sin_port = htons(6666); 
+    inet_pton(AF_INET,"127.0.0.1",&server_addr.sin_addr);//将目标ip地址写入sockaddr_in结构体
+    server_addr.sin_port = htons(6666); //目标端口
 
     //创建socket流程
     int sockfd = socket(AF_INET,SOCK_STREAM,0);

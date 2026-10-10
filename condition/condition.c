@@ -3,6 +3,8 @@
 #include <pthread.h>
 
 
+//条件变量
+
 #define BUFFER_SIZE 5
 int buffer[BUFFER_SIZE];
 int count = 0 ;
@@ -10,7 +12,6 @@ int count = 0 ;
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 //初始化条件变量
-
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 void* produce_th(void* arg)
@@ -21,10 +22,10 @@ void* produce_th(void* arg)
     {
         /* code */
         pthread_mutex_lock(&mutex);
-        if (count == BUFFER_SIZE)
+        if (count == BUFFER_SIZE) //若缓冲区满了,停止生产,等待消费
         {
             /* code */
-            pthread_cond_wait(&cond,&mutex); //会交出锁,进入等待状态，卡在这里
+            pthread_cond_wait(&cond,&mutex); //会交出锁,进入阻塞状态,被唤醒后,他会重新竞争mutex,该函数返回后,一定持有锁
         }
         buffer[count] = item++;
         count++;

@@ -84,9 +84,9 @@ int main(int argc, char const *argv[])
 
     //填写服务端地址
     server_addr.sin_family = AF_INET; //表示IPV4协议
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);//表示接收任意网络接口的连接
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);//服务端监听本机所有可用 IP 地址。(本质上是0.0.0.0)
     //inet_pton(AF_INET,"0.0.0.0",&server_addr.sin_addr.s_addr);
-    server_addr.sin_port = htons(6666); 
+    server_addr.sin_port = htons(6666); //设置端口号
 
     //创建socket流程
     int sockfd = socket(AF_INET,SOCK_STREAM,0);
@@ -96,11 +96,12 @@ int main(int argc, char const *argv[])
     int temp_res = bind(sockfd,(struct sockaddr*)&server_addr,sizeof(server_addr));
     handle_error("bind",temp_res);
     //进入监听状态
-    temp_res = listen(sockfd,128);
+    temp_res = listen(sockfd,128); //转为监听模式,不会阻塞,执行下面的代码
     handle_error("listen",temp_res);
+
     //获取客户端的连接,如果有新的客户端连接,返回一个套接字用于与该客户端通信
-    socklen_t client_addr_len =  sizeof(client_addr);
-    int commfd = accept(sockfd,(struct sockaddr*)&client_addr,&client_addr_len);
+    socklen_t client_addr_len =  sizeof(client_addr);//分配空间
+    int commfd = accept(sockfd,(struct sockaddr*)&client_addr,&client_addr_len);//阻塞,等待链接
     handle_error("accept",commfd);
 
     printf("与客户端%s %d建立了连接,文件描述符是%d\n",inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port),commfd);
